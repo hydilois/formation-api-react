@@ -1,11 +1,15 @@
 // Les imports importants
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import { HashRouter, Route, Switch, withRouter } from "react-router-dom";
 import NavBar from "./components/NavBar";
-import HomePage from "./pages/HomePage";
-import { HashRouter, Switch, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+import AuthContext from "./contexts/AuthContext";
 import CustomersPage from "./pages/CustomersPage";
+import HomePage from "./pages/HomePage";
 import InvoicesPage from "./pages/InvoicesPage";
+import LoginPage from "./pages/LoginPage";
+import AuthAPI from "./services/authAPI";
 //import CustomersPageWithPagination from "./pages/CustomersPageWithPagination";
 
 /*
@@ -21,20 +25,34 @@ require("../css/app.css");
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
-console.log("Hello World");
+AuthAPI.setup();
 
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    AuthAPI.isAuthenticated()
+  );
+
+  const NavBarWithRouter = withRouter(NavBar);
+
   return (
-    <HashRouter>
-      <NavBar />
-      <main className="container pt-5">
-        <Switch>
-          <Route path="/invoices" component={InvoicesPage}></Route>
-          <Route path="/customers" component={CustomersPage}></Route>
-          <Route path="/" component={HomePage}></Route>
-        </Switch>
-      </main>
-    </HashRouter>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        setIsAuthenticated
+      }}
+    >
+      <HashRouter>
+        <NavBarWithRouter />
+        <main className="container pt-5">
+          <Switch>
+            <Route path="/login" component={LoginPage}></Route>
+            <PrivateRoute path="/invoices" component={InvoicesPage} />
+            <PrivateRoute path="/customers" component={CustomersPage} />
+            <Route path="/" component={HomePage}></Route>
+          </Switch>
+        </main>
+      </HashRouter>
+    </AuthContext.Provider>
   );
 };
 
