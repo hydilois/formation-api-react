@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import AuthAPI from "../services/authAPI";
 import AuthContext from "../contexts/AuthContext";
+import Field from "../components/forms/Field";
 
 const LoginPage = ({ onLogin, history }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -38,36 +39,22 @@ const LoginPage = ({ onLogin, history }) => {
     <>
       <h1>Connexion à l'application</h1>
       <form onSubmit={handleSubmit} action="">
-        <div className="form-group">
-          <label htmlFor="username">Adresse email</label>
-          <input
-            onChange={handleChange}
-            value={credentials.username}
-            placeholder="Adresse email de connexion"
-            type="email"
-            name="username"
-            className={"form-control" + (error && " is-invalid")}
-            id="username"
-          />
-          {error && (
-            <p className="invalid-feedback">
-              Aucun compte ne possèdde cette adresse ou alors les informations
-              ne correspondent pas
-            </p>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="_password">Mot de passe</label>
-          <input
-            onChange={handleChange}
-            value={credentials.password}
-            placeholder="Mot de passe"
-            name="password"
-            id="password"
-            type="password"
-            className="form-control"
-          />
-        </div>
+        <Field
+          label="Adresse Email"
+          name="username"
+          value={credentials.username}
+          onChange={handleChange}
+          placeholder="Adresse email de connexion"
+          error={error}
+        />
+        <Field
+          name="password"
+          label="Mot de Passe"
+          value={credentials.password}
+          onChange={handleChange}
+          type="password"
+          error=""
+        />
         <div className="form-group">
           <button type="submit" className="btn btn-success">
             Je me connecte
