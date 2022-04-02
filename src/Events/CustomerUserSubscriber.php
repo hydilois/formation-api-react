@@ -62,7 +62,7 @@ class CustomerUserSubscriber implements EventSubscriberInterface
             //Chopper l'utilisateur connecté
             /* @var $user User*/
             $user = $this->security->getUser();
-            //Asigner l'utilisateur au customer qu'on est en train de creer
+            //Assigner l'utilisateur au customer qu'on est en train de créer
             $customer->setUser($user);
         }
     }
