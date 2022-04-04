@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elsha
- * Date: 02/11/19
- * Time: 11:40
- */
 
 namespace App\Events;
 
